@@ -1,0 +1,5 @@
+*.pyo
+*.pyc
+
+.tup
+__pycache__

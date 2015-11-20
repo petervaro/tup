@@ -1,0 +1,59 @@
+## INFO ##
+## INFO ##
+
+#----- VARIABLES --------------------------------------------------------------#
+cyan  = \e[36;1m
+none  = \e[0m
+arrow = $(cyan)==>$(none)
+
+
+#----- CONSTANTS --------------------------------------------------------------#
+arch = @(TUP_ARCH)
+ARCH = $(CONFIG_TUP_ARCH)
+
+
+#----- RULES  -----------------------------------------------------------------#
+# Empty rule
+:|>|>
+
+# Without outputs
+: Tupfile      |> printf "$(arrow) I'm doing nothing with '%f'!\n" |>
+: *.py         |> printf "$(arrow) Python files: '%f'\n"           |>
+: foreach *.py |> printf "$(arrow) Python file: '%f'\n"            |>
+
+
+#----- CONDITIONALS -----------------------------------------------------------#
+ifneq ($(arch),$(ARCH))
+    error 'arch' and 'ARCH' should be the same
+else
+    : |> printf "$(arrow) Config consts are matching: $(arch), $(ARCH)\n" |>
+endif
+
+
+#----- MACROS -----------------------------------------------------------------#
+!cc = foreach rule |> ^ CC %f^ gcc -c %f -o %o |>
+: foreach *.c |> !kl |> %B.o
+
+
+#----- INVALID EXPRESSIONS  ---------------------------------------------------#
+ifeq (this,that)
+    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    : |> |> {bin} <group> anything-else
+    #             ^^^^^^^
+    #             Invalid: group after bin
+
+    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    : |> |> {bin} {bin2} anything-else
+    #             ^^^^^^
+    #             Invalid: bin after bin
+
+    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    : |> |> <group> <group2> {bin} anything-else
+    #               ^^^^^^^^
+    #               Invalid: group after group
+
+    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    : |> |> <group> {bin} <group2> anything-else
+    #                     ^^^^^^^^
+    #                     Invalid: group after group + bin
+endif
