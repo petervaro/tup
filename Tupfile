@@ -42,10 +42,10 @@ endif
 # Empty macro
 !e=|>|>
 
-#
-!m1 = |> ^c $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
-!m2 = |> ^o $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
-!m3 = |> ^  $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
+# Macros with ^-flags and %-flags
+!m1 = |> ^c $(arrow) %f^ printf "Hello, Caret-flags\n" |>
+!m2 = |> ^o $(arrow) %f^ printf "Hello, Caret-flags\n" |>
+!m3 = |> ^  $(arrow) %f^ printf "Hello, Caret-flags\n" |>
 !mm = |> printf "$(%f)\n" |>
 
 # Macros in rules
