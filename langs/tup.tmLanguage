@@ -52,7 +52,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>^\s*(!)(.+?)\s*(=)\s*</string>
+			<string>^\s*(!)(.+?)\s*(=)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -78,50 +78,42 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.group.tup</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>&lt;(.+?)&gt;</string>
-					<key>name</key>
-					<string>keyword.operator.group.tup</string>
-				</dict>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.bin.tup</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>{(.+?)}</string>
-					<key>name</key>
-					<string>keyword.operator.bin.tup</string>
-				</dict>
-				<dict>
 					<key>begin</key>
-					<string>(\|&gt;)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.operator.arrow.tup</string>
-						</dict>
-					</dict>
+					<string>(?&lt;==)</string>
 					<key>end</key>
-					<string>(?=(?&lt;!\\)\n)</string>
+					<string>(?=(?&lt;!\\)\n|$)</string>
 					<key>name</key>
-					<string>string.unquoted.command.tup</string>
+					<string>string.unquoted.input.tup</string>
 					<key>patterns</key>
 					<array>
+						<dict>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>storage.modifier.group.tup</string>
+								</dict>
+							</dict>
+							<key>match</key>
+							<string>&lt;(.+?)&gt;</string>
+							<key>name</key>
+							<string>keyword.operator.group.tup</string>
+						</dict>
+						<dict>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>storage.type.bin.tup</string>
+								</dict>
+							</dict>
+							<key>match</key>
+							<string>{(.+?)}</string>
+							<key>name</key>
+							<string>keyword.operator.bin.tup</string>
+						</dict>
 						<dict>
 							<key>begin</key>
 							<string>(\|&gt;)</string>
@@ -134,69 +126,28 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>(?=(?&lt;!\\)\n)</string>
+							<string>(?=(?&lt;!\\)\n|$)</string>
 							<key>name</key>
 							<string>string.unquoted.command.tup</string>
 							<key>patterns</key>
 							<array>
 								<dict>
 									<key>begin</key>
-									<string>{(.+?)}</string>
+									<string>(\|&gt;)</string>
 									<key>beginCaptures</key>
 									<dict>
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>storage.type.bin.tup</string>
+											<string>keyword.operator.arrow.tup</string>
 										</dict>
 									</dict>
 									<key>end</key>
-									<string>(?=$|(\\)*\n)</string>
+									<string>(?=(?&lt;!\\)\n|$)</string>
 									<key>name</key>
-									<string>keyword.operator.bin.tup</string>
+									<string>string.unquoted.command.tup</string>
 									<key>patterns</key>
 									<array>
-										<dict>
-											<key>match</key>
-											<string>&lt;.+?&gt;.*</string>
-											<key>name</key>
-											<string>invalid.illegal.group_after_bin.tup</string>
-										</dict>
-										<dict>
-											<key>match</key>
-											<string>{.+?}.*</string>
-											<key>name</key>
-											<string>invalid.illegal.bin_after_bin.tup</string>
-										</dict>
-										<dict>
-											<key>include</key>
-											<string>#io_string</string>
-										</dict>
-									</array>
-								</dict>
-								<dict>
-									<key>begin</key>
-									<string>&lt;(.+?)&gt;</string>
-									<key>beginCaptures</key>
-									<dict>
-										<key>1</key>
-										<dict>
-											<key>name</key>
-											<string>storage.modifier.group.tup</string>
-										</dict>
-									</dict>
-									<key>end</key>
-									<string>(?=$|(\\)*\n)</string>
-									<key>name</key>
-									<string>keyword.operator.group.tup</string>
-									<key>patterns</key>
-									<array>
-										<dict>
-											<key>match</key>
-											<string>&lt;.+?&gt;.*</string>
-											<key>name</key>
-											<string>invalid.illegal.group_after_group.tup</string>
-										</dict>
 										<dict>
 											<key>begin</key>
 											<string>{(.+?)}</string>
@@ -209,7 +160,7 @@
 												</dict>
 											</dict>
 											<key>end</key>
-											<string>(?=$|(\\)*\n)</string>
+											<string>(?=(?&lt;!\\)\n|$)</string>
 											<key>name</key>
 											<string>keyword.operator.bin.tup</string>
 											<key>patterns</key>
@@ -219,6 +170,70 @@
 													<string>&lt;.+?&gt;.*</string>
 													<key>name</key>
 													<string>invalid.illegal.group_after_bin.tup</string>
+												</dict>
+												<dict>
+													<key>match</key>
+													<string>{.+?}.*</string>
+													<key>name</key>
+													<string>invalid.illegal.bin_after_bin.tup</string>
+												</dict>
+												<dict>
+													<key>include</key>
+													<string>#io_string</string>
+												</dict>
+											</array>
+										</dict>
+										<dict>
+											<key>begin</key>
+											<string>&lt;(.+?)&gt;</string>
+											<key>beginCaptures</key>
+											<dict>
+												<key>1</key>
+												<dict>
+													<key>name</key>
+													<string>storage.modifier.group.tup</string>
+												</dict>
+											</dict>
+											<key>end</key>
+											<string>(?=(?&lt;!\\)\n|$)</string>
+											<key>name</key>
+											<string>keyword.operator.group.tup</string>
+											<key>patterns</key>
+											<array>
+												<dict>
+													<key>match</key>
+													<string>&lt;.+?&gt;.*</string>
+													<key>name</key>
+													<string>invalid.illegal.group_after_group.tup</string>
+												</dict>
+												<dict>
+													<key>begin</key>
+													<string>{(.+?)}</string>
+													<key>beginCaptures</key>
+													<dict>
+														<key>1</key>
+														<dict>
+															<key>name</key>
+															<string>storage.type.bin.tup</string>
+														</dict>
+													</dict>
+													<key>end</key>
+													<string>(?=(?&lt;!\\)\n|$)</string>
+													<key>name</key>
+													<string>keyword.operator.bin.tup</string>
+													<key>patterns</key>
+													<array>
+														<dict>
+															<key>match</key>
+															<string>&lt;.+?&gt;.*</string>
+															<key>name</key>
+															<string>invalid.illegal.group_after_bin.tup</string>
+														</dict>
+														<dict>
+															<key>include</key>
+															<string>#io_string</string>
+														</dict>
+													</array>
 												</dict>
 												<dict>
 													<key>include</key>
@@ -234,13 +249,17 @@
 								</dict>
 								<dict>
 									<key>include</key>
-									<string>#io_string</string>
+									<string>#caret_flags</string>
+								</dict>
+								<dict>
+									<key>include</key>
+									<string>#cmd_string</string>
 								</dict>
 							</array>
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#cmd_string</string>
+							<string>#io_string</string>
 						</dict>
 					</array>
 				</dict>
@@ -279,7 +298,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>(?=(?&lt;!\\)\n)</string>
+					<string>(?=(?&lt;!\\)\n|$)</string>
 					<key>name</key>
 					<string>string.unquoted.inputs.tup</string>
 					<key>patterns</key>
@@ -324,7 +343,7 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>(?=(?&lt;!\\)\n)</string>
+							<string>(?=(?&lt;!\\)\n|$)</string>
 							<key>name</key>
 							<string>string.unquoted.command.tup</string>
 							<key>patterns</key>
@@ -341,7 +360,7 @@
 										</dict>
 									</dict>
 									<key>end</key>
-									<string>(?=(?&lt;!\\)\n)</string>
+									<string>(?=(?&lt;!\\)\n|$)</string>
 									<key>name</key>
 									<string>string.unquoted.command.tup</string>
 									<key>patterns</key>
@@ -358,7 +377,7 @@
 												</dict>
 											</dict>
 											<key>end</key>
-											<string>(?=$|(\\)*\n)</string>
+											<string>(?=(?&lt;!\\)\n|$)</string>
 											<key>name</key>
 											<string>keyword.operator.bin.tup</string>
 											<key>patterns</key>
@@ -393,7 +412,7 @@
 												</dict>
 											</dict>
 											<key>end</key>
-											<string>(?=$|(\\)*\n)</string>
+											<string>(?=(?&lt;!\\)\n|$)</string>
 											<key>name</key>
 											<string>keyword.operator.group.tup</string>
 											<key>patterns</key>
@@ -416,7 +435,7 @@
 														</dict>
 													</dict>
 													<key>end</key>
-													<string>(?=$|(\\)*\n)</string>
+													<string>(?=(?&lt;!\\)\n|$)</string>
 													<key>name</key>
 													<string>keyword.operator.bin.tup</string>
 													<key>patterns</key>
@@ -447,6 +466,10 @@
 								</dict>
 								<dict>
 									<key>include</key>
+									<string>#caret_flags</string>
+								</dict>
+								<dict>
+									<key>include</key>
 									<string>#cmd_string</string>
 								</dict>
 							</array>
@@ -467,7 +490,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>^\s*(ifn?def|run|include|export)\b</string>
+			<string>^\s*(run|include|export)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -477,7 +500,7 @@
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>(?&lt;!\\)\n</string>
+			<string>(?&lt;!\\)\n|$</string>
 			<key>name</key>
 			<string>string.unquoted.single_arg.tup</string>
 			<key>patterns</key>
@@ -494,11 +517,30 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
+					<string>keyword.control.single_arg.const.tup</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.character.escape.conf_var.tup</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>^\s*(ifn?def)\s*(.+?)$</string>
+			<key>name</key>
+			<string>string.unquoted.single_arg.const.tup</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
 					<string>keyword.control.single_arg.no_eval.tup</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>^\s*(error)\s+.+?(?&lt;!\\)\n</string>
+			<string>^\s*(error)(\s+.*?)?((?&lt;!\\)\n|$)</string>
 			<key>name</key>
 			<string>string.unquoted.single_arg.no_eval.tup</string>
 		</dict>
@@ -514,7 +556,7 @@
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>\)|(?&lt;!\\)\n</string>
+			<string>\)|(?&lt;!\\)\n|$</string>
 			<key>name</key>
 			<string>meta.control.double_args.tup</string>
 			<key>patterns</key>
@@ -564,37 +606,86 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>((:|\+)?=)</string>
+			<string>(^\s*&amp;?)(.+?)((:|\+)?=)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.and_variable.tup</string>
+				</dict>
+				<key>3</key>
 				<dict>
 					<key>name</key>
 					<string>keyword.operator.assignment.tup</string>
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>(?&lt;!\\)\n</string>
+			<string>(?&lt;!\\)\n|$</string>
 			<key>name</key>
-			<string>string.unquoted.value.tup</string>
+			<string>meta.assignment.variable.tup</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>include</key>
-					<string>#io_string</string>
+					<key>begin</key>
+					<string>(?&lt;==)</string>
+					<key>end</key>
+					<string>(?=(?&lt;!\\)\n|$)</string>
+					<key>name</key>
+					<string>string.unquoted.value.tup</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#io_string</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>caret_flags</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>\^(c|o|\s)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.operator.flags.caret.tup</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\^</string>
+					<key>name</key>
+					<string>constant.character.flags.caret.tup</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#percent_flags</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#variables</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
 		<key>cmd_string</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#flags</string>
+					<string>#percent_flags</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -603,28 +694,6 @@
 				<dict>
 					<key>include</key>
 					<string>#macros</string>
-				</dict>
-			</array>
-		</dict>
-		<key>flags</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>%(f|b|B|e|o|O|d|g)</string>
-					<key>name</key>
-					<string>string.interpolated.flags.percent.tup</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>\^(c|o)</string>
-					<key>end</key>
-					<string>\^</string>
-					<key>name</key>
-					<string>constant.character.flags.caret.tup</string>
-					<key>patterns</key>
-					<array/>
 				</dict>
 			</array>
 		</dict>
@@ -644,7 +713,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#flags</string>
+					<string>#percent_flags</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -678,6 +747,18 @@
 					<string>(!(?!\s))(.+?)\b</string>
 					<key>name</key>
 					<string>meta.macro.invocation.tup</string>
+				</dict>
+			</array>
+		</dict>
+		<key>percent_flags</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>%(f|b|B|e|o|O|d|g)</string>
+					<key>name</key>
+					<string>string.interpolated.flags.percent.tup</string>
 				</dict>
 			</array>
 		</dict>
@@ -724,18 +805,35 @@
 					<string>keyword.operator.reference.at.tup</string>
 				</dict>
 				<dict>
-					<key>captures</key>
+					<key>begin</key>
+					<string>(\$\()</string>
+					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>variable.tup_variable.tup</string>
+							<string>keyword.operator.reference.dollar.tup</string>
 						</dict>
 					</dict>
-					<key>match</key>
-					<string>\$\((.+?)\)</string>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.operator.reference.dollar.tup</string>
+						</dict>
+					</dict>
 					<key>name</key>
-					<string>keyword.operator.reference.dollar.tup</string>
+					<string>variable.tup_variable.tup</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#percent_flags</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>

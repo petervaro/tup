@@ -1,6 +1,11 @@
 ## INFO ##
 ## INFO ##
 
+# TODO: %o is not available in output, nor input strings, only in command
+# TODO: !-macro and ^-flags should only be available
+#       at the beginning of a command
+
+
 #-- CHEATSHEET ----------------------------------------------------------------#
 # HOWTO: http://sublimetext.info/docs/en/reference/syntaxdefs.html
 # REGEX: http://manual.macromates.com/en/regular_expressions
@@ -51,7 +56,7 @@ syntax = {
 #-- MACROS --------------------------------------------------------------------#
         {
             'name' : 'meta.macro.definition.{SCOPE}',
-            'begin': r'^\s*(!)(.+?)\s*(=)\s*',
+            'begin': r'^\s*(!)(.+?)\s*(=)',
             'beginCaptures':
             {
                 1: {'name': 'keyword.operator.macro.prefix.{SCOPE}'},
@@ -60,127 +65,13 @@ syntax = {
             },
             'patterns':
             [
+                # Input
                 {
-                    'name' : 'keyword.operator.group.{SCOPE}',
-                    'match': r'<(.+?)>',
-                    'captures':
-                    {
-                        1: {'name': 'storage.modifier.group.{SCOPE}'}
-                    }
-                },
-                {
-                    'name' : 'keyword.operator.bin.{SCOPE}',
-                    'match': r'{(.+?)}',
-                    'captures':
-                    {
-                        1: {'name': 'storage.type.bin.{SCOPE}'}
-                    }
-                },
-                {
-                    'name' : 'string.unquoted.command.{SCOPE}',
-                    'begin': r'(\|>)',
-                    'beginCaptures':
-                    {
-                        1: {'name': 'keyword.operator.arrow.{SCOPE}'}
-                    },
+                    'name' : 'string.unquoted.input.{SCOPE}',
+                    'begin': r'(?<==)',
                     'patterns':
                     [
-                        {
-                            'name' : 'string.unquoted.command.{SCOPE}',
-                            'begin': r'(\|>)',
-                            'beginCaptures':
-                            {
-                                1: {'name': 'keyword.operator.arrow.{SCOPE}'}
-                            },
-                            'patterns':
-                            [
-                                {
-                                    'name' : 'keyword.operator.bin.{SCOPE}',
-                                    'begin': r'{(.+?)}',
-                                    'beginCaptures':
-                                    {
-                                        1: {'name': 'storage.type.bin.{SCOPE}'},
-                                    },
-                                    'patterns':
-                                    [
-                                        {
-                                            'name' : 'invalid.illegal.group_after_bin.{SCOPE}',
-                                            'match': r'<.+?>.*'
-                                        },
-                                        {
-                                            'name' : 'invalid.illegal.bin_after_bin.{SCOPE}',
-                                            'match': r'{.+?}.*'
-                                        },
-                                        {'include': '#io_string'},
-                                    ],
-                                    'end': r'(?=$|(\\)*\n)'
-                                },
-                                {
-                                    'name' : 'keyword.operator.group.{SCOPE}',
-                                    'begin': r'<(.+?)>',
-                                    'beginCaptures':
-                                    {
-                                        1: {'name': 'storage.modifier.group.{SCOPE}'}
-                                    },
-                                    'patterns':
-                                    [
-                                        {
-                                            'name' : 'invalid.illegal.group_after_group.{SCOPE}',
-                                            'match': r'<.+?>.*'
-                                        },
-                                        {
-                                            'name' : 'keyword.operator.bin.{SCOPE}',
-                                            'begin': r'{(.+?)}',
-                                            'beginCaptures':
-                                            {
-                                                1: {'name': 'storage.type.bin.{SCOPE}'}
-                                            },
-                                            'patterns':
-                                            [
-                                                {
-                                                    'name' : 'invalid.illegal.group_after_bin.{SCOPE}',
-                                                    'match': r'<.+?>.*'
-                                                },
-                                                {'include': '#io_string'},
-                                            ],
-                                            'end': r'(?=$|(\\)*\n)'
-                                        },
-                                        {'include': '#io_string'},
-                                    ],
-                                    'end': r'(?=$|(\\)*\n)'
-                                },
-                                {'include': '#io_string'},
-                            ],
-                            'end': r'(?=(?<!\\)\n)'
-                        },
-                        {'include': '#cmd_string'},
-                    ],
-                    'end': r'(?=(?<!\\)\n)'
-                },
-                {'include': '#io_string'}
-            ],
-            'end': r'(?<!\\)\n|$'
-        },
-
-#-- RULES ---------------------------------------------------------------------#
-        {
-            'name' : 'meta.rule.{SCOPE}',
-            'begin': r'^\s*(:)',
-            'beginCaptures':
-            {
-                1: {'name': 'entity.other.rule.{SCOPE}'},
-            },
-            'patterns':
-            [
-                {
-                    'name' : 'string.unquoted.inputs.{SCOPE}',
-                    'begin': r'(?<=:)\s*(foreach\b)?\s*',
-                    'beginCaptures':
-                    {
-                        1: {'name': 'keyword.control.iteration.{SCOPE}'}
-                    },
-                    'patterns':
-                    [
+                        # Group
                         {
                             'name' : 'keyword.operator.group.{SCOPE}',
                             'match': r'<(.+?)>',
@@ -189,6 +80,7 @@ syntax = {
                                 1: {'name': 'storage.modifier.group.{SCOPE}'}
                             }
                         },
+                        # Bin
                         {
                             'name' : 'keyword.operator.bin.{SCOPE}',
                             'match': r'{(.+?)}',
@@ -197,6 +89,7 @@ syntax = {
                                 1: {'name': 'storage.type.bin.{SCOPE}'}
                             }
                         },
+                        # Command
                         {
                             'name' : 'string.unquoted.command.{SCOPE}',
                             'begin': r'(\|>)',
@@ -206,6 +99,7 @@ syntax = {
                             },
                             'patterns':
                             [
+                                # Output
                                 {
                                     'name' : 'string.unquoted.command.{SCOPE}',
                                     'begin': r'(\|>)',
@@ -234,7 +128,7 @@ syntax = {
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=$|(\\)*\n)'
+                                            'end': r'(?=(?<!\\)\n|$)'
                                         },
                                         {
                                             'name' : 'keyword.operator.group.{SCOPE}',
@@ -264,23 +158,154 @@ syntax = {
                                                         },
                                                         {'include': '#io_string'},
                                                     ],
-                                                    'end': r'(?=$|(\\)*\n)'
+                                                    'end': r'(?=(?<!\\)\n|$)'
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=$|(\\)*\n)'
+                                            'end': r'(?=(?<!\\)\n|$)'
                                         },
                                         {'include': '#io_string'},
                                     ],
-                                    'end': r'(?=(?<!\\)\n)'
+                                    'end': r'(?=(?<!\\)\n|$)'
                                 },
+                                {'include': '#caret_flags'},
                                 {'include': '#cmd_string'},
                             ],
-                            'end': r'(?=(?<!\\)\n)'
+                            'end': r'(?=(?<!\\)\n|$)'
+                        },
+                        {'include': '#io_string'},
+                    ],
+                    'end': r'(?=(?<!\\)\n|$)'
+                },
+                {'include': '#io_string'}
+            ],
+            'end': r'(?<!\\)\n|$'
+        },
+
+#-- RULES ---------------------------------------------------------------------#
+        {
+            'name' : 'meta.rule.{SCOPE}',
+            'begin': r'^\s*(:)',
+            'beginCaptures':
+            {
+                1: {'name': 'entity.other.rule.{SCOPE}'},
+            },
+            'patterns':
+            [
+                {
+                    'name' : 'string.unquoted.inputs.{SCOPE}',
+                    'begin': r'(?<=:)\s*(foreach\b)?\s*',
+                    'beginCaptures':
+                    {
+                        1: {'name': 'keyword.control.iteration.{SCOPE}'}
+                    },
+                    'patterns':
+                    [
+                        # Group
+                        {
+                            'name' : 'keyword.operator.group.{SCOPE}',
+                            'match': r'<(.+?)>',
+                            'captures':
+                            {
+                                1: {'name': 'storage.modifier.group.{SCOPE}'}
+                            }
+                        },
+                        # Bin
+                        {
+                            'name' : 'keyword.operator.bin.{SCOPE}',
+                            'match': r'{(.+?)}',
+                            'captures':
+                            {
+                                1: {'name': 'storage.type.bin.{SCOPE}'}
+                            }
+                        },
+                        # Command
+                        {
+                            'name' : 'string.unquoted.command.{SCOPE}',
+                            'begin': r'(\|>)',
+                            'beginCaptures':
+                            {
+                                1: {'name': 'keyword.operator.arrow.{SCOPE}'}
+                            },
+                            'patterns':
+                            [
+                                # Output
+                                {
+                                    'name' : 'string.unquoted.command.{SCOPE}',
+                                    'begin': r'(\|>)',
+                                    'beginCaptures':
+                                    {
+                                        1: {'name': 'keyword.operator.arrow.{SCOPE}'}
+                                    },
+                                    'patterns':
+                                    [
+                                        {
+                                            'name' : 'keyword.operator.bin.{SCOPE}',
+                                            'begin': r'{(.+?)}',
+                                            'beginCaptures':
+                                            {
+                                                1: {'name': 'storage.type.bin.{SCOPE}'},
+                                            },
+                                            'patterns':
+                                            [
+                                                {
+                                                    'name' : 'invalid.illegal.group_after_bin.{SCOPE}',
+                                                    'match': r'<.+?>.*'
+                                                },
+                                                {
+                                                    'name' : 'invalid.illegal.bin_after_bin.{SCOPE}',
+                                                    'match': r'{.+?}.*'
+                                                },
+                                                {'include': '#io_string'},
+                                            ],
+                                            'end': r'(?=(?<!\\)\n|$)'
+                                        },
+                                        {
+                                            'name' : 'keyword.operator.group.{SCOPE}',
+                                            'begin': r'<(.+?)>',
+                                            'beginCaptures':
+                                            {
+                                                1: {'name': 'storage.modifier.group.{SCOPE}'}
+                                            },
+                                            'patterns':
+                                            [
+                                                {
+                                                    'name' : 'invalid.illegal.group_after_group.{SCOPE}',
+                                                    'match': r'<.+?>.*'
+                                                },
+                                                {
+                                                    'name' : 'keyword.operator.bin.{SCOPE}',
+                                                    'begin': r'{(.+?)}',
+                                                    'beginCaptures':
+                                                    {
+                                                        1: {'name': 'storage.type.bin.{SCOPE}'}
+                                                    },
+                                                    'patterns':
+                                                    [
+                                                        {
+                                                            'name' : 'invalid.illegal.group_after_bin.{SCOPE}',
+                                                            'match': r'<.+?>.*'
+                                                        },
+                                                        {'include': '#io_string'},
+                                                    ],
+                                                    'end': r'(?=(?<!\\)\n|$)'
+                                                },
+                                                {'include': '#io_string'},
+                                            ],
+                                            'end': r'(?=(?<!\\)\n|$)'
+                                        },
+                                        {'include': '#io_string'},
+                                    ],
+                                    'end': r'(?=(?<!\\)\n|$)'
+                                },
+                                {'include': '#caret_flags'},
+                                {'include': '#cmd_string'},
+                            ],
+                            'end': r'(?=(?<!\\)\n|$)'
                         },
                         {'include': '#io_string'}
                     ],
-                    'end': r'(?=(?<!\\)\n)'
+                    'end': r'(?=(?<!\\)\n|$)'
                 },
             ],
             'end': r'(?<!\\)\n|$'
@@ -293,7 +318,7 @@ syntax = {
         },
         {
             'name' : 'string.unquoted.single_arg.{SCOPE}',
-            'begin': r'^\s*(ifn?def|run|include|export)\b',
+            'begin': r'^\s*(run|include|export)\b',
             'beginCaptures':
             {
                 1: {'name': 'keyword.control.single_arg.{SCOPE}'}
@@ -302,11 +327,20 @@ syntax = {
             [
                 {'include': '#cmd_string'},
             ],
-            'end': r'(?<!\\)\n'
+            'end': r'(?<!\\)\n|$'
+        },
+        {
+            'name' : 'string.unquoted.single_arg.const.{SCOPE}',
+            'match': r'^\s*(ifn?def)\s*(.+?)$',
+            'captures':
+            {
+                1: {'name': 'keyword.control.single_arg.const.{SCOPE}'},
+                2: {'name': 'constant.character.escape.conf_var.{SCOPE}'}
+            }
         },
         {
             'name' : 'string.unquoted.single_arg.no_eval.{SCOPE}',
-            'match': r'^\s*(error)\s+.+?(?<!\\)\n',
+            'match': r'^\s*(error)(\s+.*?)?((?<!\\)\n|$)',
             'captures':
             {
                 1: {'name': 'keyword.control.single_arg.no_eval.{SCOPE}'}
@@ -348,29 +382,38 @@ syntax = {
                     'end': r'(?=\))'
                 }
             ],
-            'end': r'\)|(?<!\\)\n'
+            'end': r'\)|(?<!\\)\n|$'
         },
 
 #-- OPERATORS -----------------------------------------------------------------#
         {
-            'name' : 'string.unquoted.value.{SCOPE}',
-            'begin': r'((:|\+)?=)',
+            'name' : 'meta.assignment.variable.{SCOPE}',
+            'begin': r'(^\s*&?)(.+?)((:|\+)?=)',
             'beginCaptures':
             {
-                1: {'name': 'keyword.operator.assignment.{SCOPE}'}
+                1: {'name': 'keyword.operator.and_variable.{SCOPE}'},
+                3: {'name': 'keyword.operator.assignment.{SCOPE}'}
             },
             'patterns':
             [
-                {'include': '#io_string'},
+                {
+                    'name' : 'string.unquoted.value.{SCOPE}',
+                    'begin': r'(?<==)',
+                    'patterns':
+                    [
+                        {'include': '#io_string'},
+                    ],
+                    'end': r'(?=(?<!\\)\n|$)'
+                },
             ],
-            'end': r'(?<!\\)\n'
+            'end': r'(?<!\\)\n|$'
         },
     ],
 
 #-- REPOSITORY ----------------------------------------------------------------#
     'repository':
     {
-        'flags':
+        'percent_flags':
         {
             'patterns':
             [
@@ -378,15 +421,26 @@ syntax = {
                     'name' : 'string.interpolated.flags.percent.{SCOPE}',
                     'match': r'%(f|b|B|e|o|O|d|g)'
                 },
+            ]
+        },
+        'caret_flags':
+        {
+            'patterns':
+            [
                 {
                     'name' : 'constant.character.flags.caret.{SCOPE}',
-                    'begin': r'\^(c|o)',
+                    'begin': r'\^(c|o|\s)',
+                    'beginCaptures':
+                    {
+                        1: {'name': 'keyword.operator.flags.caret.{SCOPE}'}
+                    },
                     'patterns':
                     [
-                        # %-flags
+                        {'include': '#percent_flags'},
+                        {'include': '#variables'}
                     ],
                     'end': r'\^'
-                },
+                }
             ]
         },
         'variables':
@@ -412,11 +466,20 @@ syntax = {
                     }
                 },
                 {
-                    'name' : 'keyword.operator.reference.dollar.{SCOPE}',
-                    'match': r'\$\((.+?)\)',
-                    'captures':
+                    'name' : 'variable.tup_variable.{SCOPE}',
+                    'begin': r'(\$\()',
+                    'beginCaptures':
                     {
-                        1: {'name': 'variable.tup_variable.{SCOPE}'},
+                        1: {'name': 'keyword.operator.reference.dollar.{SCOPE}'}
+                    },
+                    'patterns':
+                    [
+                        {'include': '#percent_flags'}
+                    ],
+                    'end': r'(\))',
+                    'endCaptures':
+                    {
+                        1: {'name': 'keyword.operator.reference.dollar.{SCOPE}'}
                     }
                 },
             ]
@@ -458,7 +521,7 @@ syntax = {
                     'include': '#wildcards'
                 },
                 {
-                    'include': '#flags'
+                    'include': '#percent_flags'
                 },
                 {
                     'include': '#variables'
@@ -473,7 +536,7 @@ syntax = {
             'patterns':
             [
                 {
-                    'include': '#flags'
+                    'include': '#percent_flags'
                 },
                 {
                     'include': '#variables'

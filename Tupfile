@@ -2,9 +2,13 @@
 ## INFO ##
 
 #----- VARIABLES --------------------------------------------------------------#
-cyan  = \e[36;1m
-none  = \e[0m
-arrow = $(cyan)==>$(none)
+cyan    = \e[36;1m
+none    = \e[0m
+arrow   = ==>
+prompt  = $(cyan)$(arrow)$(none)
+Tupfile = main-tup-file
+CWD     = $(TUP_CWD)
+&build  = build.py
 
 
 #----- CONSTANTS --------------------------------------------------------------#
@@ -17,22 +21,36 @@ ARCH = $(CONFIG_TUP_ARCH)
 :|>|>
 
 # Without outputs
-: Tupfile      |> printf "$(arrow) I'm doing nothing with '%f'!\n" |>
-: *.py         |> printf "$(arrow) Python files: '%f'\n"           |>
-: foreach *.py |> printf "$(arrow) Python file: '%f'\n"            |>
+: Tupfile      |> printf "$(prompt) I'm doing nothing with '%f'!\n" |>
+: *.py         |> printf "$(prompt) Python files: '%f'\n"           |>
+: foreach *.py |> printf "$(prompt) Python file: '%f'\n"            |>
 
 
 #----- CONDITIONALS -----------------------------------------------------------#
 ifneq ($(arch),$(ARCH))
     error 'arch' and 'ARCH' should be the same
 else
-    : |> printf "$(arrow) Config consts are matching: $(arch), $(ARCH)\n" |>
+    : |> printf "$(prompt) Config consts are matching: $(arch), $(ARCH)\n" |>
+endif
+
+ifdef FOO
+    : |> printf "$(prompt) CONFIG_FOO is defined in tup.config\n" |>
 endif
 
 
 #----- MACROS -----------------------------------------------------------------#
-!cc = foreach rule |> ^ CC %f^ gcc -c %f -o %o |>
-: foreach *.c |> !kl |> %B.o
+# Empty macro
+!e=|>|>
+
+#
+!m1 = |> ^c $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
+!m2 = |> ^o $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
+!m3 = |> ^  $(arrow) %f^ printf "Hello, Caret-flags!\n" |>
+!mm = |> printf "$(%f)\n" |>
+
+# Macros in rules
+: Tupfile |> !m3 |>
+: Tupfile |> !mm |>
 
 
 #----- INVALID EXPRESSIONS  ---------------------------------------------------#
