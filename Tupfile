@@ -21,10 +21,14 @@ ARCH = $(CONFIG_TUP_ARCH)
 :|>|>
 
 # Without outputs
-: Tupfile      |> printf "$(prompt) I'm doing nothing with '%f'!\n" |>
-: *.py         |> printf "$(prompt) Python files: '%f'\n"           |>
-: foreach *.py |> printf "$(prompt) Python file: '%f'\n"            |>
+: Tupfile      |> printf "$(prompt) I'm doing nothing with '%f'\n" |>
+: *.py         |> printf "$(prompt) Python files: '%f'\n"          |>
+: foreach *.py |> printf "$(prompt) Python file: '%f'\n"           |>
 
+# Multiline rule
+: tup.config                                                                   \
+    |> printf "$(prompt) All the configurations are inside '%f'\n"             \
+    |> @(DUMMY)
 
 #----- CONDITIONALS -----------------------------------------------------------#
 ifneq ($(arch),$(ARCH))

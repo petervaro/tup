@@ -1,5 +1,13 @@
+# Extensions
+*.DS_Store
 *.pyo
 *.pyc
+*.sublime-workspace
+*.sublime-project
 
+# Folders
 .tup
 __pycache__
+
+# Files
+dummy_file

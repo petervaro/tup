@@ -74,7 +74,7 @@ syntax = {
                         # Group
                         {
                             'name' : 'keyword.operator.group.{SCOPE}',
-                            'match': r'<(.+?)>',
+                            'match': r'<(.+?)(?<!\|)>',
                             'captures':
                             {
                                 1: {'name': 'storage.modifier.group.{SCOPE}'}
@@ -128,11 +128,11 @@ syntax = {
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=(?<!\\)\n|$)'
+                                            'end': r'(?=(?<!\\)\n)'
                                         },
                                         {
                                             'name' : 'keyword.operator.group.{SCOPE}',
-                                            'begin': r'<(.+?)>',
+                                            'begin': r'<(.+?)(?<!\|)>',
                                             'beginCaptures':
                                             {
                                                 1: {'name': 'storage.modifier.group.{SCOPE}'}
@@ -158,24 +158,24 @@ syntax = {
                                                         },
                                                         {'include': '#io_string'},
                                                     ],
-                                                    'end': r'(?=(?<!\\)\n|$)'
+                                                    'end': r'(?=(?<!\\)\n)'
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=(?<!\\)\n|$)'
+                                            'end': r'(?=(?<!\\)\n)'
                                         },
                                         {'include': '#io_string'},
                                     ],
-                                    'end': r'(?=(?<!\\)\n|$)'
+                                    'end': r'(?=(?<!\\)\n)'
                                 },
                                 {'include': '#caret_flags'},
                                 {'include': '#cmd_string'},
                             ],
-                            'end': r'(?=(?<!\\)\n|$)'
+                            'end': r'(?=(?<!\\)\n)'
                         },
                         {'include': '#io_string'},
                     ],
-                    'end': r'(?=(?<!\\)\n|$)'
+                    'end': r'(?=(?<!\\)\n)'
                 },
                 {'include': '#io_string'}
             ],
@@ -204,7 +204,7 @@ syntax = {
                         # Group
                         {
                             'name' : 'keyword.operator.group.{SCOPE}',
-                            'match': r'<(.+?)>',
+                            'match': r'<(.+?)(?<!\|)>',
                             'captures':
                             {
                                 1: {'name': 'storage.modifier.group.{SCOPE}'}
@@ -258,11 +258,11 @@ syntax = {
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=(?<!\\)\n|$)'
+                                            'end': r'(?=(?<!\\)\n)'
                                         },
                                         {
                                             'name' : 'keyword.operator.group.{SCOPE}',
-                                            'begin': r'<(.+?)>',
+                                            'begin': r'<(.+?)(?<!\|)>',
                                             'beginCaptures':
                                             {
                                                 1: {'name': 'storage.modifier.group.{SCOPE}'}
@@ -288,24 +288,24 @@ syntax = {
                                                         },
                                                         {'include': '#io_string'},
                                                     ],
-                                                    'end': r'(?=(?<!\\)\n|$)'
+                                                    'end': r'(?=(?<!\\)\n)'
                                                 },
                                                 {'include': '#io_string'},
                                             ],
-                                            'end': r'(?=(?<!\\)\n|$)'
+                                            'end': r'(?=(?<!\\)\n)'
                                         },
                                         {'include': '#io_string'},
                                     ],
-                                    'end': r'(?=(?<!\\)\n|$)'
+                                    'end': r'(?=(?<!\\)\n)'
                                 },
                                 {'include': '#caret_flags'},
                                 {'include': '#cmd_string'},
                             ],
-                            'end': r'(?=(?<!\\)\n|$)'
+                            'end': r'(?=(?<!\\)\n)'
                         },
                         {'include': '#io_string'}
                     ],
-                    'end': r'(?=(?<!\\)\n|$)'
+                    'end': r'(?=(?<!\\)\n)'
                 },
             ],
             'end': r'(?<!\\)\n|$'
@@ -403,7 +403,7 @@ syntax = {
                     [
                         {'include': '#io_string'},
                     ],
-                    'end': r'(?=(?<!\\)\n|$)'
+                    'end': r'(?=(?<!\\)\n)'
                 },
             ],
             'end': r'(?<!\\)\n|$'
