@@ -27,7 +27,7 @@ from src.tup import syntax
 lang = Language(name='tup',
                 path=LANG_PATH,
                 scope='tup',
-                comments={'lines' : '#'},
+                comments={'line_comments' : ('#',)},
                 test_name='Tupfile_TEST',
                 test_path='~/.config/sublime-text-3/Packages/User/Tupfile_TEST')
 # Convert and save language file
